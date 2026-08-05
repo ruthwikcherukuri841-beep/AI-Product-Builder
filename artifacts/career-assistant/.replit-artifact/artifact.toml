@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AI Career Assistant"
+description = "A production-ready AI Career Assistant web app. Users log in, chat with a Gemini-powered AI career coach, save their resume and job description, and get help with ATS optimization, interview prep, skill-gap analysis, learning roadmaps, and more. Features ChatGPT-style UI with persistent chat history, dark/light mode, markdown rendering, and streaming-style responses."
+version = "1.0.0"
+id = "artifacts/career-assistant"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23503
+
+[services.development]
+run = "pnpm --filter @workspace/career-assistant run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/career-assistant", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/career-assistant/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23503"
+BASE_PATH = "/"
